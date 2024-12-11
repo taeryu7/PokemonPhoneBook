@@ -144,9 +144,34 @@ class AddNumberViewController: UIViewController, UIImagePickerControllerDelegate
    }
    
    /// 저장 버튼 탭 시 호출되는 메서드
-   @objc private func saveButtonTapped() {
-       navigationController?.popViewController(animated: true)
-   }
+    @objc private func saveButtonTapped() {
+        guard let name = nameTextField.text, !name.isEmpty,
+              let phoneNumber = phoneTextField.text, !phoneNumber.isEmpty else {
+            let alert = UIAlertController(title: "입력 오류",
+                                        message: "이름과 전화번호를 입력해주세요",
+                                        preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        let context = (UIApplication.shared.delegate as! AppDelegate)
+            .persistentContainer.viewContext
+        
+        let contact = PokemonPhoneBook(context: context)
+        contact.name = name
+        contact.phoneNumber = phoneNumber
+        if let image = profileImageView.image {
+            contact.profileImage = image.jpegData(compressionQuality: 1.0)?.base64EncodedString()
+        }
+        
+        do {
+            try context.save()
+            navigationController?.popViewController(animated: true)
+        } catch {
+            print("저장 실패: \(error)")
+        }
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate

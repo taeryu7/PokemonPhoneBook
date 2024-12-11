@@ -9,10 +9,14 @@
 /* Begin PBXBuildFile section */
 		1BB092F32D030ECD00B0B3F4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1BB092F22D030ECD00B0B3F4 /* SnapKit */; };
 		1BB092F62D030EDF00B0B3F4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1BB092F52D030EDF00B0B3F4 /* Alamofire */; };
+		1BB093412D08189D00B0B3F4 /* PokemonPhoneBook+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB093402D08189300B0B3F4 /* PokemonPhoneBook+CoreDataProperties.swift */; };
+		1BB093452D0818CF00B0B3F4 /* PokemonPhoneBook+CoreDataClass .swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB093442D0818CE00B0B3F4 /* PokemonPhoneBook+CoreDataClass .swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1BB092B72D0307D400B0B3F4 /* PokemonPhoneBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonPhoneBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BB093402D08189300B0B3F4 /* PokemonPhoneBook+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PokemonPhoneBook+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1BB093442D0818CE00B0B3F4 /* PokemonPhoneBook+CoreDataClass .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PokemonPhoneBook+CoreDataClass .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,6 +56,8 @@
 		1BB092AE2D0307D400B0B3F4 = {
 			isa = PBXGroup;
 			children = (
+				1BB093442D0818CE00B0B3F4 /* PokemonPhoneBook+CoreDataClass .swift */,
+				1BB093402D08189300B0B3F4 /* PokemonPhoneBook+CoreDataProperties.swift */,
 				1BB092B92D0307D400B0B3F4 /* PokemonPhoneBook */,
 				1BB092B82D0307D400B0B3F4 /* Products */,
 			);
@@ -145,6 +151,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BB093412D08189D00B0B3F4 /* PokemonPhoneBook+CoreDataProperties.swift in Sources */,
+				1BB093452D0818CF00B0B3F4 /* PokemonPhoneBook+CoreDataClass .swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
