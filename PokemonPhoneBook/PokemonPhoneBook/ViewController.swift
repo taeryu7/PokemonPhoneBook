@@ -4,12 +4,6 @@
 //
 //  Created by 유태호 on 12/6/24.
 //
-//
-//  ViewController.swift
-//  PokemonPhoneBook
-//
-//  Created by 유태호 on 12/6/24.
-//
 
 import UIKit
 import SnapKit
@@ -99,6 +93,7 @@ class ViewController: UIViewController {
        tableView.register(ContactCell.self, forCellReuseIdentifier: "ContactCell")
        tableView.rowHeight = 80  // 셀 높이 지정
        tableView.separatorStyle = .singleLine  // 구분선 스타일 지정
+       tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)  // 구분선 여백 좌우 40으로 설정
    }
   
   // MARK: - Data Management

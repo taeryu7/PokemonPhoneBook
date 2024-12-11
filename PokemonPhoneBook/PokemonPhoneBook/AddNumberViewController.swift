@@ -28,7 +28,7 @@ class AddNumberViewController: UIViewController, UIImagePickerControllerDelegate
        super.viewDidLoad()
        configureUI()           // UI 구성요소 설정
        setupNavigationBar()    // 네비게이션 바 설정
-       setupGestureRecognizer() // 제스처 인식기 설정
+       phoneTextField.delegate = self
    }
    
    // MARK: - Navigation Setup
@@ -98,22 +98,6 @@ class AddNumberViewController: UIViewController, UIImagePickerControllerDelegate
        }
    }
    
-   // MARK: - Gesture Setup
-   /// 프로필 이미지 탭 제스처 설정
-   private func setupGestureRecognizer() {
-       let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
-       profileImageView.isUserInteractionEnabled = true
-       profileImageView.addGestureRecognizer(tapGesture)
-   }
-   
-   // MARK: - Actions
-   /// 프로필 이미지뷰 탭 시 호출되는 메서드
-   @objc private func profileImageTapped() {
-       let picker = UIImagePickerController()
-       picker.delegate = self
-       picker.sourceType = .photoLibrary
-       present(picker, animated: true)
-   }
    
    /// 랜덤 포켓몬 버튼 탭 시 호출되는 메서드
    @objc private func randomPokemonButtonTapped() {
@@ -177,13 +161,69 @@ class AddNumberViewController: UIViewController, UIImagePickerControllerDelegate
 // MARK: - UIImagePickerControllerDelegate
 /// 이미지 피커 관련 델리게이트 메서드 구현
 extension AddNumberViewController {
-   /// 이미지 선택 완료 시 호출되는 메서드
-   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-       if let image = info[.originalImage] as? UIImage {
-           profileImageView.image = image
-       }
-       picker.dismiss(animated: true)
-   }
+    
+    /// 이미지 선택 완료 시 호출되는 메서드
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo  info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            profileImageView.image = image
+        }
+        picker.dismiss(animated: true)
+    }
+    
+}
+
+// 전화번호 '-' 하이픈 자동 마스킹 함수
+extension AddNumberViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == phoneTextField {
+            let fullString = (textField.text ?? "") + string
+            let cleanNumber = fullString.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+            
+            // 백스페이스 처리
+            if string.isEmpty {
+                textField.text = formatPhoneNumber(String(cleanNumber.dropLast()))  // String으로 변환
+                return false
+            }
+            
+            // 숫자만 입력 가능하도록
+            if !string.isEmpty && !CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
+                return false
+            }
+            
+            // 최대 11자리까지만 입력 가능
+            if cleanNumber.count > 11 {
+                return false
+            }
+            
+            textField.text = formatPhoneNumber(cleanNumber)
+            return false
+        }
+        return true
+    }
+    
+    private func formatPhoneNumber(_ number: String) -> String {
+        let cleanNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        
+        // 3자리 이하
+        if cleanNumber.count <= 3 {
+            return cleanNumber
+        }
+        
+        // 3자리 초과 7자리 이하
+        if cleanNumber.count <= 7 {
+            let index = cleanNumber.index(cleanNumber.startIndex, offsetBy: 3)
+            return String(format: "%@-%@",
+                        String(cleanNumber[..<index]),
+                        String(cleanNumber[index...]))
+        }
+        
+        // 7자리 초과
+        let prefix = String(cleanNumber.prefix(3))
+        let middle = String(cleanNumber[cleanNumber.index(cleanNumber.startIndex, offsetBy: 3)..<cleanNumber.index(cleanNumber.startIndex, offsetBy: 7)])
+        let end = String(cleanNumber[cleanNumber.index(cleanNumber.startIndex, offsetBy: 7)...])
+        
+        return String(format: "%@-%@-%@", prefix, middle, end)
+    }
 }
 
 // MARK: - Preview
